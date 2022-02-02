@@ -35,8 +35,6 @@ def protein():
         else:
             amino_acid_count_dictionary['error'] += 1
 
-    #print(amino_acid_count_dictionary)
-
     # Get first amino acid letter
     if amino_acid_sequence[0] in amino_acid_reference_dictionary:
         first_amino_acid = amino_acid_sequence[0].upper()
