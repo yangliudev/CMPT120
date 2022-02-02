@@ -3,6 +3,7 @@
 # February 2, 2022
 
 def protein():
+    # Initialize necessary dictionaries
     amino_acid_count_dictionary = {
         'a': 0,
         'd': 0,
@@ -22,9 +23,11 @@ def protein():
         't': 'Threonine',
     }
 
+    # Get user input and length of input
     amino_acid_sequence = input('Enter an amino acid sequence: ')
     amino_acid_sequence_length = len(amino_acid_sequence)
 
+    # Loop through input and count occurrences
     for char in amino_acid_sequence:
         char = char.lower()
         if char in amino_acid_reference_dictionary:
@@ -47,7 +50,14 @@ def protein():
         last_amino_acid = '*'
 
     # Print out the results
-
-
+    print('\nREPORT ON PROTEIN: ' + first_amino_acid + ' -- ' + last_amino_acid)
+    print('Sequence length: ' + str(amino_acid_sequence_length))
+    for char in amino_acid_count_dictionary:
+        amino_acid_percentage = (amino_acid_count_dictionary[char] / amino_acid_sequence_length) * 100
+        precision = 3
+        if char != 'error':
+            print(amino_acid_reference_dictionary[char] + ': ' + str(amino_acid_count_dictionary[char]) + ', ' + f'{amino_acid_percentage:.{precision}f}' + '%')
+    print('error: ' + str(amino_acid_count_dictionary['error']) + ', '  f'{amino_acid_percentage:.{precision}f}' + '%')
+        
 sample_input = 'agtmfrdafmgrtdfph4fdmmaartmfmmt$6'
 protein()
