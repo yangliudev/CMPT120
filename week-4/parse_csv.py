@@ -9,5 +9,5 @@ print('Directory of script being run', pathlib.Path(__file__).parent.resolve())
 # Read file
 file = open("/Users/yangliu/Desktop/SFU/CMPT_120/week-4/data.csv")
 
-for line in file:
-    print(line)
+# for line in file:
+#     print(line)
