@@ -6,6 +6,7 @@ import pathlib
 
 def college_major_report():
     # ~~~~~~~~~~~~~~~ PART 1
+
     # Open data file
     file = open(str(pathlib.Path(__file__).parent.resolve()) + '/major_data.csv', 'r')
 
@@ -36,8 +37,8 @@ def college_major_report():
 
     total_cols = len(majors)
 
+    # Loop through income list to get income average for each major
     overall_avg_median_income = avg_median_income // total_rows
-
     for i in income:
         avg = int(i) / overall_avg_median_income
         avg = round(avg * 100, 3)
@@ -47,7 +48,7 @@ def college_major_report():
     print('Overall average median income = ', overall_avg_median_income)
     print('\n')
 
-    # Part 1: Overall Data - Data Table
+    # Part 1: Overall Data - First Data Table
     print ("{:<40} {:<10} {:<10} {:<1}".format('MAJOR','#PEOPLE','INCOME', 'INC/AVG'))
 
     for i in range(total_cols):
@@ -62,7 +63,7 @@ def college_major_report():
 
     file = open(str(pathlib.Path(__file__).parent.resolve()) + '/major_data.csv', 'r')
 
-    print('--------------------------------------------------------------------------')
+    print('--------------------------------------------------------------------------\n')
 
     # Variable initialization - Data for Table 2
     major_list_table2 = []
@@ -77,7 +78,6 @@ def college_major_report():
         print(user_input_major_name.title() + ' is in the ' + major_to_category[user_input_major_name].title() + ' major category.')
 
         # Loop through csv data again to get neccessary data for assosciated major category
-        file.seek(0)
         with file as f:
             next(f)
             for line in file:
@@ -102,7 +102,7 @@ def college_major_report():
         difference = int(income_list_table2[income]) - comparison_income
         income_comparison_table2.append(difference)
 
-    # Part 2: User Interaction - Data Table
+    # Part 2: User Interaction - Second Data Table
     print ("{:<40} {:<10} {:<10} {:<1}".format('MAJOR','UNEMP','INCOME', 'INC +/-'))
 
     for i in range(length_table2):
