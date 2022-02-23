@@ -8,6 +8,8 @@ import random
 t.Screen().bgcolor("#caf9fa")
 
 def draw_squares(color):
+    t.pencolor(color)
+
     t.penup()
     t.goto(100, 100)
     t.pendown()
