@@ -7,7 +7,9 @@ import subprocess
 def main():
     img = cmpt120image.getImage(str(pathlib.Path(__file__).parent.resolve()) + '/bird.png')
 
-    cmpt120imageManip.blackWhite(img)
+    # cmpt120imageManip.blackWhite(img)
+    # cmpt120imageManip.swapRedGreen(img)
+    cmpt120imageManip.reflect(img)
 
     # Copy output to clipboard
     # subprocess.run("pbcopy", universal_newlines=True, input=str(img))
