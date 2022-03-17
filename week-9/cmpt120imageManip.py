@@ -15,6 +15,7 @@ def swapRedGreen(img):
             # Red and green swap places, blue stays in place
             canvas[row][col] = [g, r, b]
 
+    cmpt120image.showImage(canvas)
     cmpt120image.saveImage(canvas, 'imgRGswap.png')
 
 def blackWhite(img):
@@ -33,6 +34,7 @@ def blackWhite(img):
                 # Change to white
                 canvas[row][col] = [255, 255, 255]
 
+    cmpt120image.showImage(canvas)
     cmpt120image.saveImage(canvas, 'imgBW.png')
 
 def reflect(img):
@@ -51,6 +53,7 @@ def reflect(img):
         for col in range(width):
             canvas[row][col] = reflected_canvas[row][col]
 
+    cmpt120image.showImage(canvas)
     cmpt120image.saveImage(canvas, 'imgReflect.png')
 
 """
@@ -72,3 +75,24 @@ def reflect(img):
         [1, 2, 3]
     ]
 """
+
+def brighten(img):
+    height = len(img)
+    width = len(img[0])
+
+    canvas = cmpt120image.getBlackImage(width, height)
+
+    for row in range(height):
+        for col in range(width):
+            r = img[row][col][0]
+            g = img[row][col][1]
+            b = img[row][col][2]
+
+            if r < 229 and g < 229 and b < 229:
+                r *= 1.1
+                g *= 1.1
+                b *= 1.1
+
+            canvas[row][col] = [r, g, b]
+
+    cmpt120image.saveImage(canvas, 'imgBright.png')
