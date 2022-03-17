@@ -97,4 +97,5 @@ def brighten(img):
 
             img[row][col] = [r, g, b]
 
+    cmpt120image.showImage(img)
     cmpt120image.saveImage(img, 'imgBright.png')
