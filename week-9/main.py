@@ -1,3 +1,7 @@
+# Yang Liu
+# CMPT 120 D400
+# March 16, 2022
+
 import cmpt120image
 import cmpt120imageManip
 import pathlib
@@ -25,5 +29,7 @@ def main():
             cmpt120imageManip.reflect(img)
         elif num == '4':
             cmpt120imageManip.brighten(img)
+        elif num == '5':
+            img = cmpt120image.getImage(str(pathlib.Path(__file__).parent.resolve()) + '/bird.png')
     
 main()

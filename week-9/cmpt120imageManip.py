@@ -1,3 +1,7 @@
+# Yang Liu
+# CMPT 120 D400
+# March 16, 2022
+
 import cmpt120image
 
 def swapRedGreen(img):
@@ -80,8 +84,6 @@ def brighten(img):
     height = len(img)
     width = len(img[0])
 
-    canvas = cmpt120image.getBlackImage(width, height)
-
     for row in range(height):
         for col in range(width):
             r = img[row][col][0]
@@ -93,6 +95,6 @@ def brighten(img):
                 g *= 1.1
                 b *= 1.1
 
-            canvas[row][col] = [r, g, b]
+            img[row][col] = [r, g, b]
 
-    cmpt120image.saveImage(canvas, 'imgBright.png')
+    cmpt120image.saveImage(img, 'imgBright.png')
