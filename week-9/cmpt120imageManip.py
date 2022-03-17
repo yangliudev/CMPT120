@@ -41,12 +41,34 @@ def reflect(img):
 
     canvas = cmpt120image.getBlackImage(width, height)
 
-    # We only want the top half of the image
-    ls = img[0]
-    len_half_ls = len(ls) // 2
-    top_half = ls[:len_half_ls]
-    print(top_half)
+    for row in range(height // 2):
+        for col in range(width):
+            canvas[row][col] = img[row][col]
 
-    joined = top_half + top_half
+    reflected_canvas = canvas[::-1]
 
-    cmpt120image.saveImage([joined], 'imgReflect.png')
+    for row in range(height // 2, height):
+        for col in range(width):
+            canvas[row][col] = reflected_canvas[row][col]
+
+    cmpt120image.saveImage(canvas, 'imgReflect.png')
+
+"""
+    Original
+
+    [ 
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [10, 11, 12]
+    ]
+
+    Reflection would be
+
+    [ 
+        [1, 2, 3],
+        [4, 5, 6],
+        [4, 5, 6],
+        [1, 2, 3]
+    ]
+"""
