@@ -31,5 +31,6 @@ def main():
             cmpt120imageManip.brighten(img)
         elif num == '5':
             img = cmpt120image.getImage(str(pathlib.Path(__file__).parent.resolve()) + '/bird.png')
+            cmpt120image.showImage(img)
     
 main()
