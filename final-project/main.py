@@ -3,6 +3,7 @@
 # April 7, 2022
 
 import pathlib
+import cmpt120image
 
 # Global Dictionary
 colour_dictionary = {}
@@ -35,6 +36,21 @@ def rgb_to_hex(rgb_list):
 
     return hex_list
 
+def darken_pixel_colour(ls, percentage):
+    darkened_list = []
+    for pixel in ls:
+        darkened_list.append(pixel * percentage)
+
+    return darkened_list
+
+def lighten_pixel_colour(ls, percentage):
+    lightened_list = []
+    for pixel in ls:
+        new_pixel = pixel + (255 - pixel) * percentage
+        lightened_list.append(new_pixel)
+
+    return lightened_list
+
 # Main Function
 
 def main():
@@ -52,6 +68,8 @@ def main():
             select_color()
         elif user_input == '4':
             find_closest_colour()
+        elif user_input == '5':
+            display_and_save_colour_scheme()
         else:
             print_menu()
 
@@ -147,5 +165,50 @@ def find_closest_colour():
         print('\n')
         print('The closest colour to ' + str([r, g, b]) + ' is ' + str(closest_colour) + ', ' + colour_dictionary[tuple(closest_colour)][0] + ', with hex code ' + colour_dictionary[tuple(closest_colour)][1] + '.')
         print('The absolute difference between the two colours is ' + str(min_val) + '.')
+
+def display_and_save_colour_scheme():
+    print('Enter the RGB values of your base colour.')
+
+    r = int(input('R: '))
+    g = int(input('G: '))
+    b = int(input('B: '))
+
+    print('Which colour scheme do you wish to display?')
+    print('M: Monochrome')
+    print('C: Complementary')
+
+    # A colour square is a 240 x 240 image (list of list of pixels)
+
+    lightest_pixels = lighten_pixel_colour([r, g, b], 0.8)
+    slightly_lighter_pixels = lighten_pixel_colour([r, g, b], 0.5)
+
+    slightly_darker_pixels = darken_pixel_colour([r, g, b], 0.5)
+    darkest_pixels = darken_pixel_colour([r, g, b], 0.8)
+
+    height = 240
+    width = 240
+
+    canvas = cmpt120image.getBlackImage(width, height)
+
+    print(canvas)
+
+    for row in range(height):
+        for col in range(width):
+            # Populate with lighter values
+            if (row < 80) and (col >= 0 and col < 80):
+                canvas[row][col] = lightest_pixels
+            elif row < 80 and col >= 160:
+                canvas[row][col] = slightly_lighter_pixels
+            # Form cross
+            elif (row >= 80 and row < 160) or (col >= 80 and col < 160):
+                canvas[row][col] = [r, g, b]
+            # Populate with darker values
+            elif (row >= 160) and (col >= 0 and col < 80):
+                canvas[row][col] = slightly_darker_pixels
+            elif row >= 160 and col >= 160:
+                canvas[row][col] = darkest_pixels
+
+    cmpt120image.showImage(canvas)
+    cmpt120image.saveImage(canvas, 'cscheme.png')
 
 main()
