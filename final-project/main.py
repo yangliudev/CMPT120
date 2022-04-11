@@ -51,6 +51,13 @@ def lighten_pixel_colour(ls, percentage):
 
     return lightened_list
 
+def complement_pixel_colour(ls):
+    complement_pixel_list = []
+    for pixel in ls:
+        complement_pixel_list.append(255 - pixel)
+
+    return complement_pixel_list
+
 # Main Function
 
 def main():
@@ -173,40 +180,89 @@ def display_and_save_colour_scheme():
     g = int(input('G: '))
     b = int(input('B: '))
 
+    user_rgb_list = [r, g, b]
+
     print('Which colour scheme do you wish to display?')
     print('M: Monochrome')
     print('C: Complementary')
 
+    user_colour_scheme_choice = input('Select an option: ').lower()
+
     # A colour square is a 240 x 240 image (list of list of pixels)
 
-    lightest_pixels = lighten_pixel_colour([r, g, b], 0.8)
-    slightly_lighter_pixels = lighten_pixel_colour([r, g, b], 0.5)
+    lightest_pixels = lighten_pixel_colour(user_rgb_list, 0.8)
+    slightly_lighter_pixels = lighten_pixel_colour(user_rgb_list, 0.5)
 
-    slightly_darker_pixels = darken_pixel_colour([r, g, b], 0.5)
-    darkest_pixels = darken_pixel_colour([r, g, b], 0.8)
+    slightly_darker_pixels = darken_pixel_colour(user_rgb_list, 0.5)
+    darkest_pixels = darken_pixel_colour(user_rgb_list, 0.8)
 
     height = 240
-    width = 240
+    if user_colour_scheme_choice == 'm':
+        width = 240
+    else:
+        width = 480
+        complement_pixels = complement_pixel_colour(user_rgb_list)
+        
+        lightest_pixels_complement = lighten_pixel_colour(complement_pixels, 0.8)
+        slightly_lighter_pixels_complement = lighten_pixel_colour(complement_pixels, 0.5)
+
+        slightly_darker_pixels_complement = darken_pixel_colour(complement_pixels, 0.5)
+        darkest_pixels_complement = darken_pixel_colour(complement_pixels, 0.8)
 
     canvas = cmpt120image.getBlackImage(width, height)
 
-    print(canvas)
+    if user_colour_scheme_choice == 'm':
+        for row in range(height):
+            for col in range(width):
+                # Populate with lighter values
+                if (row < 80) and (col >= 0 and col < 80):
+                    canvas[row][col] = lightest_pixels
+                elif row < 80 and col >= 160:
+                    canvas[row][col] = slightly_lighter_pixels
+                # Form cross
+                elif (row >= 80 and row < 160) or (col >= 80 and col < 160):
+                    canvas[row][col] = user_rgb_list
+                # Populate with darker values
+                elif (row >= 160) and (col >= 0 and col < 80):
+                    canvas[row][col] = slightly_darker_pixels
+                elif row >= 160 and col >= 160:
+                    canvas[row][col] = darkest_pixels
+    else:
+        for row in range(height):
+            for col in range(width):
+                # Populate with lighter values
+                if (row < 80) and (col >= 0 and col < 80):
+                    canvas[row][col] = lightest_pixels
+                elif (row < 80) and (col >= 160 and col < 240):
+                    canvas[row][col] = slightly_lighter_pixels
+                elif (row < 80) and (col >= 240 and col < 320):
+                    canvas[row][col] = lightest_pixels_complement
+                elif (row < 80) and (col >= 400):
+                    canvas[row][col] = slightly_lighter_pixels_complement
 
-    for row in range(height):
-        for col in range(width):
-            # Populate with lighter values
-            if (row < 80) and (col >= 0 and col < 80):
-                canvas[row][col] = lightest_pixels
-            elif row < 80 and col >= 160:
-                canvas[row][col] = slightly_lighter_pixels
-            # Form cross
-            elif (row >= 80 and row < 160) or (col >= 80 and col < 160):
-                canvas[row][col] = [r, g, b]
-            # Populate with darker values
-            elif (row >= 160) and (col >= 0 and col < 80):
-                canvas[row][col] = slightly_darker_pixels
-            elif row >= 160 and col >= 160:
-                canvas[row][col] = darkest_pixels
+                # Populate with original and complement values
+                elif (row < 80) and (col >= 80 and col < 160):
+                    canvas[row][col] = user_rgb_list
+                elif (row < 80) and (col >= 320 and col < 400):
+                    canvas[row][col] = complement_pixels
+                elif (row >= 80 and row < 160) and (col < 240):
+                    canvas[row][col] = user_rgb_list
+                elif (row >= 80 and row < 160) and (col >= 240):
+                    canvas[row][col] = complement_pixels
+                elif (row >= 160) and (col >= 80 and col < 160):
+                    canvas[row][col] = user_rgb_list
+                elif (row >= 160) and (col >= 320 and col < 400):
+                    canvas[row][col] = complement_pixels
+
+                # Populate with darker values
+                elif (row >= 160) and (col >= 0 and col < 80):
+                    canvas[row][col] = slightly_darker_pixels
+                elif (row >= 160) and (col >= 160 and col < 240):
+                    canvas[row][col] = darkest_pixels
+                elif (row >= 160) and (col >= 240 and col < 320):
+                    canvas[row][col] = slightly_darker_pixels_complement
+                elif (row >= 160) and (col >= 400):
+                    canvas[row][col] = darkest_pixels_complement
 
     cmpt120image.showImage(canvas)
     cmpt120image.saveImage(canvas, 'cscheme.png')
