@@ -4,6 +4,7 @@
 
 import pathlib
 import cmpt120image
+import cmpt120colours
 
 # Global Dictionary
 colour_dictionary = {}
@@ -18,45 +19,6 @@ def print_menu():
     print('4. Find Closest Colour')
     print('5. Display (Save) Colour Scheme')
     print('0. Quit')
-
-def rgb_to_hex(rgb_list):
-    hex_list = []
-
-    for rgb_val in rgb_list:
-        hex_val = hex(int(rgb_val))
-        formatted_hex_val = hex_val.lstrip('0x')
-        if formatted_hex_val == '':
-            formatted_hex_val = '00'
-        elif len(formatted_hex_val) == 1:
-            formatted_hex_val = '0' + formatted_hex_val
-        
-        hex_list.append(formatted_hex_val)
-
-    hex_list.insert(0, '#')
-
-    return hex_list
-
-def darken_pixel_colour(ls, percentage):
-    darkened_list = []
-    for pixel in ls:
-        darkened_list.append(pixel * percentage)
-
-    return darkened_list
-
-def lighten_pixel_colour(ls, percentage):
-    lightened_list = []
-    for pixel in ls:
-        new_pixel = pixel + (255 - pixel) * percentage
-        lightened_list.append(new_pixel)
-
-    return lightened_list
-
-def complement_pixel_colour(ls):
-    complement_pixel_list = []
-    for pixel in ls:
-        complement_pixel_list.append(255 - pixel)
-
-    return complement_pixel_list
 
 # Main Function
 
@@ -88,7 +50,7 @@ def load_colour_file():
     for line in file:
         split_key_val = line.strip().split(',', 1)
         rgb_vals = split_key_val[1].split(',')
-        hex_list = rgb_to_hex(rgb_vals)
+        hex_list = cmpt120colours.rgb_to_hex(rgb_vals)
         hex_string = ''.join(hex_list)
         value_list = [split_key_val[0], hex_string]
 
@@ -133,7 +95,7 @@ def select_color():
         user_input = input('Select an option: ')
         if user_input == '1':
             user_colour = input("What is the colour's name? ")
-            hex_list = rgb_to_hex(list(rgb))
+            hex_list = cmpt120colours.rgb_to_hex(list(rgb))
             hex_code = ''.join(hex_list)
             print('Colour ' + str([r, g, b]) + ' is ' + user_colour + ' and has hex code ' + hex_code)
             
@@ -173,6 +135,8 @@ def find_closest_colour():
         print('The closest colour to ' + str([r, g, b]) + ' is ' + str(closest_colour) + ', ' + colour_dictionary[tuple(closest_colour)][0] + ', with hex code ' + colour_dictionary[tuple(closest_colour)][1] + '.')
         print('The absolute difference between the two colours is ' + str(min_val) + '.')
 
+# Part 4 - Display Colour Scheme
+
 def display_and_save_colour_scheme():
     print('Enter the RGB values of your base colour.')
 
@@ -190,24 +154,24 @@ def display_and_save_colour_scheme():
 
     # A colour square is a 240 x 240 image (list of list of pixels)
 
-    lightest_pixels = lighten_pixel_colour(user_rgb_list, 0.8)
-    slightly_lighter_pixels = lighten_pixel_colour(user_rgb_list, 0.5)
+    lightest_pixels = cmpt120colours.lighten_pixel_colour(user_rgb_list, 0.8)
+    slightly_lighter_pixels = cmpt120colours.lighten_pixel_colour(user_rgb_list, 0.5)
 
-    slightly_darker_pixels = darken_pixel_colour(user_rgb_list, 0.5)
-    darkest_pixels = darken_pixel_colour(user_rgb_list, 0.8)
+    slightly_darker_pixels = cmpt120colours.darken_pixel_colour(user_rgb_list, 0.5)
+    darkest_pixels = cmpt120colours.darken_pixel_colour(user_rgb_list, 0.8)
 
     height = 240
     if user_colour_scheme_choice == 'm':
         width = 240
     else:
         width = 480
-        complement_pixels = complement_pixel_colour(user_rgb_list)
+        complement_pixels = cmpt120colours.complement_pixel_colour(user_rgb_list)
         
-        lightest_pixels_complement = lighten_pixel_colour(complement_pixels, 0.8)
-        slightly_lighter_pixels_complement = lighten_pixel_colour(complement_pixels, 0.5)
+        lightest_pixels_complement = cmpt120colours.lighten_pixel_colour(complement_pixels, 0.8)
+        slightly_lighter_pixels_complement = cmpt120colours.lighten_pixel_colour(complement_pixels, 0.5)
 
-        slightly_darker_pixels_complement = darken_pixel_colour(complement_pixels, 0.5)
-        darkest_pixels_complement = darken_pixel_colour(complement_pixels, 0.8)
+        slightly_darker_pixels_complement = cmpt120colours.darken_pixel_colour(complement_pixels, 0.5)
+        darkest_pixels_complement = cmpt120colours.darken_pixel_colour(complement_pixels, 0.8)
 
     canvas = cmpt120image.getBlackImage(width, height)
 
