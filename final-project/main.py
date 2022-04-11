@@ -46,6 +46,7 @@ def main():
 
 def load_colour_file():
     file = open(str(pathlib.Path(__file__).parent.resolve()) + '/colours.csv', 'r')
+    count = 0
     
     for line in file:
         split_key_val = line.strip().split(',', 1)
@@ -58,8 +59,9 @@ def load_colour_file():
 
         # Add key value pair to dictionary
         colour_dictionary[key_tuple] = value_list
+        count += 1
 
-    print(colour_dictionary)
+    print('The file has been processed and ' + str(count) + ' colours were entered into the dictionary')
 
 def print_all_colours():
     print("{:<40} {:<10} {:<10} {:<10} {:<1}".format('Colour Name','Red','Green', 'Blue', 'Hex'))
@@ -152,13 +154,14 @@ def display_and_save_colour_scheme():
 
     user_colour_scheme_choice = input('Select an option: ').lower()
 
-    # A colour square is a 240 x 240 image (list of list of pixels)
-
     lightest_pixels = cmpt120colours.lighten_pixel_colour(user_rgb_list, 0.8)
     slightly_lighter_pixels = cmpt120colours.lighten_pixel_colour(user_rgb_list, 0.5)
 
     slightly_darker_pixels = cmpt120colours.darken_pixel_colour(user_rgb_list, 0.5)
     darkest_pixels = cmpt120colours.darken_pixel_colour(user_rgb_list, 0.8)
+
+    # A colour square is a 240 x 240 image (list of list of pixels)
+    # Monochrome is 240 x 240, Complementary is 240 x 480
 
     height = 240
     if user_colour_scheme_choice == 'm':
